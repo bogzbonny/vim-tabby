@@ -6,6 +6,14 @@ let g:autoloaded_tabby_inline_completion_service = 1
 let g:tabby_inline_completion_trigger = get(g:, 'tabby_inline_completion_trigger', 'auto')
 let g:tabby_inline_completion_insertion_leading_key = get(g:, 'tabby_inline_completion_insertion_leading_key', "\<C-R>\<C-O>=")
 
+" List of filetypes for which tabby suggestions are disabled.
+let g:tabby_disabled_filetypes = get(g:, 'tabby_disabled_filetypes', [])
+
+" List of filetypes for which tabby suggestions are enabled when the
+" "disable all except" mode is active. If non‑empty, all other filetypes are
+" automatically disabled.
+let g:tabby_disable_all_except_filetypes = get(g:, 'tabby_disable_all_except_filetypes', [])
+
 let s:current_request_context = {}
 let s:current_request_id = 0
 
@@ -33,6 +41,14 @@ function! tabby#inline_completion#service#Trigger(is_manually)
     call g:tabby_inline_completion_source.CancelRequest(s:current_request_id)
   endif
   if g:tabby_inline_completion_trigger != 'auto' && !a:is_manually
+    return
+  endif
+  " Do not trigger for disabled filetypes
+  if index(g:tabby_disabled_filetypes, &filetype) >= 0
+    return
+  endif
+  " When "disable all except" list is non‑empty, only allow those filetypes
+  if len(g:tabby_disable_all_except_filetypes) > 0 && index(g:tabby_disable_all_except_filetypes, &filetype) < 0
     return
   endif
   let params = s:CreateInlineCompletionContext(a:is_manually)

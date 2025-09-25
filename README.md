@@ -91,6 +91,8 @@ Here is a table of all configuration variables that can be set when the Tabby pl
 | `g:tabby_inline_completion_keybinding_accept` | `"<Tab>"` | The keybinding to accept the inline completion |
 | `g:tabby_inline_completion_keybinding_trigger_or_dismiss` | `"<C-\>"` | The keybinding to trigger or dismiss the inline completion |
 | `g:tabby_inline_completion_insertion_leading_key` | `"\<C-R>\<C-O>="` | The leading key sequence to insert the inline completion text |
+| `g:tabby_disabled_filetypes` | `[]` | List of filetypes for which Tabby suggestions are disabled |
+| `g:tabby_disable_all_except_filetypes` | `[]` | List of filetypes to enable Tabby for; when non‑empty, all other filetypes are disabled |
 
 ## Contributing
 
