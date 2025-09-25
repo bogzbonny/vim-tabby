@@ -43,14 +43,17 @@ function! tabby#inline_completion#service#Trigger(is_manually)
   if g:tabby_inline_completion_trigger != 'auto' && !a:is_manually
     return
   endif
+
   " Do not trigger for disabled filetypes
   if index(g:tabby_disabled_filetypes, &filetype) >= 0
     return
   endif
+
   " When "disable all except" list is non‑empty, only allow those filetypes
-  if len(g:tabby_disable_all_except_filetypes) > 0 && index(g:tabby_disable_all_except_filetypes, &filetype) < 0
+  if len(g:tabby_disable_all_except_filetypes) > 0 && index(g:tabby_disable_all_except_filetypes, &filetype) == -1
     return
   endif
+
   let params = s:CreateInlineCompletionContext(a:is_manually)
   let s:current_request_context = params
   let OnResponse = { result -> s:HandleCompletionResponse(params, result) }
